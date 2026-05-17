@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Do You Love Me? 💕</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #ffe8f0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      position: relative;
+      padding: 20px;
+    }
+
+    /* Floating hearts background */
+    .bg-hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .bg-hearts span {
+      position: absolute;
+      animation: floatUp linear infinite;
+    }
+
+    @keyframes floatUp {
+      0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+      15%  { opacity: 0.55; }
+      80%  { opacity: 0.45; }
+      100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Main card */
+    #questionContainer {
+      position: relative;
+      background: #fff0f5;
+      border-radius: 28px;
+      padding: 32px 28px 90px;
+      box-shadow: 0 20px 60px rgba(255, 100, 140, 0.2);
+      text-align: center;
+      width: min(380px, 100%);
+      min-height: 370px;
+      border: 2px solid #ffc2d4;
+      z-index: 10;
+      animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+      0%   { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .bear-img {
+      width: 140px;
+      height: 140px;
+      object-fit: contain;
+      margin-bottom: 10px;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #d6336c;
+      margin-bottom: 28px;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    button {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 12px 32px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    #yesBtn {
+      background: linear-gradient(135deg, #ff6b9d, #ff3d7f);
+      color: white;
+      box-shadow: 0 6px 20px rgba(255, 61, 127, 0.4);
+    }
+    #yesBtn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 8px 25px rgba(255, 61, 127, 0.5);
+    }
+    #yesBtn:active {
+      transform: scale(0.97);
+    }
+
+    #noBtn {
+      background: #ffe0ea;
+      color: #d6336c;
+      box-shadow: 0 4px 12px rgba(214, 51, 108, 0.15);
+      position: absolute;
+    }
+    #noBtn:hover {
+      background: #ffc2d4;
+    }
+
+    /* Result screen */
+    #resultContainer {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    #resultContainer img {
+      width: 160px;
+      border-radius: 20px;
+    }
+
+    #resultContainer p {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: #d6336c;
+    }
+
+
+
+
+
+    /* Message button */
+    #msgBtn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #fd79a8, #e84393);
+      color: white;
+      font-size: 0.95rem;
+      padding: 11px 28px;
+      box-shadow: 0 6px 18px rgba(232, 67, 147, 0.35);
+      margin-top: 4px;
+    }
+    #msgBtn:hover {
+      transform: scale(1.07);
+      box-shadow: 0 8px 22px rgba(232, 67, 147, 0.5);
+    }
+
+    /* Floating hearts on yes */
+    .heart-burst {
+      position: fixed;
+      font-size: 2rem;
+      pointer-events: none;
+      animation: burstUp 1.2s ease-out forwards;
+      z-index: 999;
+    }
+    @keyframes burstUp {
+      0%   { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-200px) scale(1.5); opacity: 0; }
+    }
+    /* ── Mobile responsive ── */
+    @media (max-width: 420px) {
+      #questionContainer {
+        padding: 28px 20px 95px;
+        border-radius: 24px;
+        min-height: 360px;
+      }
+      .bear-img {
+        width: 120px;
+        height: 120px;
+      }
+      h1 {
+        font-size: 1.5rem;
+        margin-bottom: 22px;
+      }
+      button {
+        font-size: 0.95rem;
+        padding: 11px 26px;
+      }
+      #resultContainer p {
+        font-size: 1.35rem;
+      }
+      #msgBtn {
+        font-size: 0.88rem;
+        padding: 10px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background floating hearts -->
+  <div class="bg-hearts" id="bgHearts"></div>
+
+  <div id="questionContainer">
+
+    <!-- Question view -->
+    <div id="heartLoader">
+      <!-- Male penguin SVG (bow tie) -->
+      <svg class="bear-img" viewBox="0 0 200 210" xmlns="http://www.w3.org/2000/svg">
+        <!-- Body -->
+        <ellipse cx="100" cy="140" rx="52" ry="58" fill="#2c2c3e"/>
+        <!-- Belly -->
+        <ellipse cx="100" cy="150" rx="34" ry="42" fill="#f5f0e8"/>
+        <!-- Head -->
+        <circle cx="100" cy="75" r="42" fill="#2c2c3e"/>
+        <!-- Face white patch -->
+        <ellipse cx="100" cy="85" rx="27" ry="22" fill="#f5f0e8"/>
+        <!-- Eyes -->
+        <circle cx="88" cy="70" r="8" fill="white"/>
+        <circle cx="112" cy="70" r="8" fill="white"/>
+        <circle cx="90" cy="71" r="5" fill="#1a1a2e"/>
+        <circle cx="114" cy="71" r="5" fill="#1a1a2e"/>
+        <circle cx="91" cy="69" r="2" fill="white"/>
+        <circle cx="115" cy="69" r="2" fill="white"/>
+        <!-- Beak -->
+        <ellipse cx="100" cy="87" rx="9" ry="6" fill="#ff9f43"/>
+        <path d="M 91 87 Q 100 93 109 87" fill="#e67e22"/>
+        <!-- Cheeks -->
+        <circle cx="80" cy="83" r="7" fill="#74b9ff" opacity="0.5"/>
+        <circle cx="120" cy="83" r="7" fill="#74b9ff" opacity="0.5"/>
+        <!-- Wings -->
+        <ellipse cx="50" cy="135" rx="16" ry="32" fill="#2c2c3e" transform="rotate(-10 50 135)"/>
+        <ellipse cx="150" cy="135" rx="16" ry="32" fill="#2c2c3e" transform="rotate(10 150 135)"/>
+        <!-- Feet -->
+        <ellipse cx="83" cy="193" rx="18" ry="8" fill="#ff9f43"/>
+        <ellipse cx="117" cy="193" rx="18" ry="8" fill="#ff9f43"/>
+        <!-- Bow tie (male) -->
+        <polygon points="88,112 100,119 88,126" fill="#0984e3"/>
+        <polygon points="112,112 100,119 112,126" fill="#0984e3"/>
+        <circle cx="100" cy="119" r="4" fill="#74b9ff"/>
+        <!-- Question mark thought -->
+        <text x="128" y="52" font-size="20" fill="#ff3d7f">💕</text>
+      </svg>
+
+      <h1>Do you love me?</h1>
+
+      <div class="btn-group">
+        <button id="yesBtn">Yes 💖</button>
+        <button id="noBtn">No</button>
+      </div>
+    </div>
+
+    <!-- Result view -->
+    <div id="resultContainer">
+      <!-- Male + Female penguins hugging SVG -->
+      <svg width="200" height="185" viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg">
+
+        <!-- ── MALE penguin (left) ── -->
+        <!-- Body -->
+        <ellipse cx="75" cy="148" rx="38" ry="44" fill="#2c2c3e"/>
+        <!-- Belly -->
+        <ellipse cx="75" cy="156" rx="24" ry="31" fill="#f5f0e8"/>
+        <!-- Head -->
+        <circle cx="75" cy="86" r="32" fill="#2c2c3e"/>
+        <!-- Face patch -->
+        <ellipse cx="75" cy="95" rx="20" ry="17" fill="#f5f0e8"/>
+        <!-- Eyes -->
+        <circle cx="66" cy="80" r="6" fill="white"/>
+        <circle cx="84" cy="80" r="6" fill="white"/>
+        <circle cx="67" cy="81" r="3.5" fill="#1a1a2e"/>
+        <circle cx="85" cy="81" r="3.5" fill="#1a1a2e"/>
+        <circle cx="68" cy="79" r="1.2" fill="white"/>
+        <circle cx="86" cy="79" r="1.2" fill="white"/>
+        <!-- Beak -->
+        <ellipse cx="75" cy="97" rx="7" ry="5" fill="#ff9f43"/>
+        <path d="M 68 97 Q 75 102 82 97" fill="#e67e22"/>
+        <!-- Cheeks (blue = male) -->
+        <circle cx="60" cy="93" r="6" fill="#74b9ff" opacity="0.5"/>
+        <circle cx="90" cy="93" r="6" fill="#74b9ff" opacity="0.5"/>
+        <!-- Left wing -->
+        <ellipse cx="38" cy="138" rx="12" ry="26" fill="#2c2c3e" transform="rotate(-12 38 138)"/>
+        <!-- Right wing hugging female -->
+        <path d="M 108 128 Q 130 122 135 148" stroke="#2c2c3e" stroke-width="13" fill="none" stroke-linecap="round"/>
+        <!-- Feet -->
+        <ellipse cx="62" cy="188" rx="14" ry="6" fill="#ff9f43"/>
+        <ellipse cx="86" cy="188" rx="14" ry="6" fill="#ff9f43"/>
+        <!-- Bow tie (male) -->
+        <polygon points="65,117 75,123 65,129" fill="#0984e3"/>
+        <polygon points="85,117 75,123 85,129" fill="#0984e3"/>
+        <circle cx="75" cy="123" r="3.5" fill="#74b9ff"/>
+        <!-- Happy eye squint -->
+        <path d="M 63 78 Q 67 74 71 78" stroke="#1a1a2e" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M 79 78 Q 83 74 87 78" stroke="#1a1a2e" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+        <!-- ── FEMALE penguin (right) ── -->
+        <!-- Body -->
+        <ellipse cx="162" cy="148" rx="38" ry="44" fill="#2c2c3e"/>
+        <!-- Belly -->
+        <ellipse cx="162" cy="156" rx="24" ry="31" fill="#f5f0e8"/>
+        <!-- Head -->
+        <circle cx="162" cy="86" r="32" fill="#2c2c3e"/>
+        <!-- Face patch -->
+        <ellipse cx="162" cy="95" rx="20" ry="17" fill="#f5f0e8"/>
+        <!-- Eyes -->
+        <circle cx="153" cy="80" r="6" fill="white"/>
+        <circle cx="171" cy="80" r="6" fill="white"/>
+        <circle cx="154" cy="81" r="3.5" fill="#1a1a2e"/>
+        <circle cx="172" cy="81" r="3.5" fill="#1a1a2e"/>
+        <circle cx="155" cy="79" r="1.2" fill="white"/>
+        <circle cx="173" cy="79" r="1.2" fill="white"/>
+        <!-- Eyelashes (female) -->
+        <line x1="149" y1="75" x2="147" y2="71" stroke="#1a1a2e" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="153" y1="74" x2="152" y2="70" stroke="#1a1a2e" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="157" y1="74" x2="157" y2="70" stroke="#1a1a2e" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="167" y1="74" x2="167" y2="70" stroke="#1a1a2e" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="171" y1="74" x2="172" y2="70" stroke="#1a1a2e" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="175" y1="75" x2="177" y2="71" stroke="#1a1a2e" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- Beak -->
+        <ellipse cx="162" cy="97" rx="7" ry="5" fill="#ff9f43"/>
+        <path d="M 155 97 Q 162 102 169 97" fill="#e67e22"/>
+        <!-- Cheeks (pink = female) -->
+        <circle cx="147" cy="93" r="6" fill="#ff6b9d" opacity="0.6"/>
+        <circle cx="177" cy="93" r="6" fill="#ff6b9d" opacity="0.6"/>
+        <!-- Right wing -->
+        <ellipse cx="198" cy="138" rx="12" ry="26" fill="#2c2c3e" transform="rotate(12 198 138)"/>
+        <!-- Left wing hugging male -->
+        <path d="M 128 128 Q 108 122 104 148" stroke="#2c2c3e" stroke-width="13" fill="none" stroke-linecap="round"/>
+        <!-- Feet -->
+        <ellipse cx="150" cy="188" rx="14" ry="6" fill="#ff9f43"/>
+        <ellipse cx="174" cy="188" rx="14" ry="6" fill="#ff9f43"/>
+        <!-- Bow / hair ribbon (female) -->
+        <polygon points="152,56 162,62 152,68" fill="#ff3d7f"/>
+        <polygon points="172,56 162,62 172,68" fill="#ff3d7f"/>
+        <circle cx="162" cy="62" r="5" fill="#ff6b9d"/>
+        <!-- Happy eye squint -->
+        <path d="M 150 78 Q 154 74 158 78" stroke="#1a1a2e" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M 166 78 Q 170 74 174 78" stroke="#1a1a2e" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+        <!-- Hearts floating above -->
+        <text x="100" y="44" font-size="16" fill="#ff3d7f">💗</text>
+        <text x="116" y="26" font-size="22" fill="#ff6b9d">💕</text>
+        <text x="136" y="42" font-size="16" fill="#ff3d7f">💖</text>
+      </svg>
+
+      <p>I knew it 😍!</p>
+
+      <button id="msgBtn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        💌
+      </button>
+
+
+    </div>
+
+  </div>
+
+  <script>
+    // ── Background floating hearts ──
+    const bgHearts = document.getElementById('bgHearts');
+    const heartEmojis = ['💕', '💖', '💗', '💓', '❤️', '🧡', '💛', '💚', '💙', '💜', '🤎', '🖤', '🤍', '❣', '💕', '💞', '💘', '💝', '💟', '🧡💛💚💙💜🤎🖤🤍❣💕💞💘💝💟'];
+    for (let i = 0; i < 22; i++) {
+      const s = document.createElement('span');
+      s.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+      const dur = 7 + Math.random() * 6;
+      s.style.left = Math.random() * 100 + 'vw';
+      s.style.animationDuration = dur + 's';
+      // negative delay = heart already mid-flight when page loads
+      s.style.animationDelay = -(Math.random() * dur) + 's';
+      s.style.fontSize = (1.2 + Math.random() * 1.8) + 'rem';
+      bgHearts.appendChild(s);
+    }
+
+    // ── Elements ──
+    const noBtn              = document.getElementById('noBtn');
+    const yesBtn             = document.getElementById('yesBtn');
+    const heartLoader        = document.getElementById('heartLoader');
+    const resultContainer    = document.getElementById('resultContainer');
+    const questionContainer  = document.getElementById('questionContainer');
+
+    // noBtn is absolute inside questionContainer
+    noBtn.style.position = 'absolute';
+    noBtn.style.transition = 'left 0.15s ease, top 0.15s ease';
+
+    // Put noBtn back beside Yes button (to the right)
+    function resetNoBtnPosition() {
+      const contRect = questionContainer.getBoundingClientRect();
+      const yesRect  = yesBtn.getBoundingClientRect();
+
+      const yesRelTop  = yesRect.top  - contRect.top;
+      const yesRelLeft = yesRect.left - contRect.left;
+
+      noBtn.style.left = (yesRelLeft + yesBtn.offsetWidth + 16) + 'px';
+      noBtn.style.top  = (yesRelTop + (yesBtn.offsetHeight / 2) - (noBtn.offsetHeight / 2)) + 'px';
+    }
+
+    window.addEventListener('load', resetNoBtnPosition);
+    setTimeout(resetNoBtnPosition, 50);
+
+    // ── No button runs anywhere — works on both mouse and touch ──
+    function runAway() {
+      const maxX = questionContainer.offsetWidth  - noBtn.offsetWidth  - 8;
+      const maxY = questionContainer.offsetHeight - noBtn.offsetHeight - 8;
+      const newX = Math.max(8, Math.floor(Math.random() * maxX));
+      const newY = Math.max(8, Math.floor(Math.random() * maxY));
+      noBtn.style.left = `${newX}px`;
+      noBtn.style.top  = `${newY}px`;
+    }
+
+    noBtn.addEventListener('mouseover', runAway);
+    noBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault(); // touch এ click যেন না হয়
+      runAway();
+    }, { passive: false });
+
+    // ── Yes button: show result ──
+    yesBtn.addEventListener('click', (event) => {
+      spawnHeartBurst(event.clientX, event.clientY);
+
+      setTimeout(() => {
+        heartLoader.style.display     = 'none';
+        resultContainer.style.display = 'flex';
+      }, 300);
+    });
+
+
+
+    // ── Message button: open WhatsApp ──
+    document.getElementById('msgBtn').addEventListener('click', () => {
+      const phone = '8801716435434';
+      const text  = encodeURIComponent('I love you 🤍');
+      window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+    });
+
+    // ── Heart burst animation ──
+    function spawnHeartBurst(x, y) {
+      const emojis = ['💖', '💕', '💗', '💓', '❣'];
+      for (let i = 0; i < 10; i++) {
+        const el = document.createElement('span');
+        el.className = 'heart-burst';
+        el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        el.style.left = (x + (Math.random() - 0.5) * 100) + 'px';
+        el.style.top  = y + 'px';
+        el.style.animationDelay = (Math.random() * 0.3) + 's';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 1500);
+      }
+    }
+  </script>
+</body>
+</html>
